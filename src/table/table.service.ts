@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Table } from './entities/table.entity';
 import { CreateTableDto } from './table.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,31 +13,50 @@ import { UpdateTableDto } from './update-table.dto';
 export class TableService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async delete(id: string) {
-    await this.prisma.table.delete({ where: { id }})
+  async findById(id: string): Promise<Table> {
+    const response = await this.prisma.table.findUnique({ where: { id } });
+    console.log(response);
+
+    if (!response) {
+      throw new BadRequestException(`Registro com id não encontrado.`);
+    }
+    return response;
   }
 
-  update(id: string, dto: UpdateTableDto): Promise<Table> {
-    const data: Partial<Table> = { ...dto}
+  async findOne(id: string): Promise<Table> {
+    return this.findById(id);
+  }
+
+  async update(id: string, dto: UpdateTableDto): Promise<Table> {
+    const data: Partial<Table> = { ...dto };
+
+    await this.findById(id);
 
     return this.prisma.table.update({
       where: { id },
-      data
-    })
+      data,
+    });
   }
 
-  findOne( id:string ): Promise<Table> {
-    return this.prisma.table.findUnique({ where: { id } });
+  handleError(error: Error) {
+    console.log(error.message);
+    throw new UnprocessableEntityException(error.message);
+    return undefined;
+  }
+
+  async create(dto: CreateTableDto): Promise<Table> {
+    const data: Table = { ...dto };
+
+    await this.prisma.table.create({ data }).catch(this.handleError); //({data:data}) is the same ad ({data}) ==> implicit
+    return undefined;
   }
 
   findAll(): Promise<Table[]> {
     return this.prisma.table.findMany();
   }
 
-  create(dto: CreateTableDto): Promise<Table> {
-    const data: Table = { ...dto };
-
-    return this.prisma.table.create({ data }); //({data:data}) is the same ad ({data}) ==> implicit
+  async delete(id: string): Promise<void> {
+    await this.findById(id)
+    await this.prisma.table.delete({ where: { id } }).catch(this.handleError);
   }
-
 }
