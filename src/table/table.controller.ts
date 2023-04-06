@@ -10,10 +10,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { TableService } from './table.service';
-import { CreateTableDto } from './table.dto';
+import { CreateTableDto } from './dto/table.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Table } from './entities/table.entity';
-import { UpdateTableDto } from './update-table.dto';
+import { UpdateTableDto } from './dto/update-table.dto';
 
 @ApiTags('table')
 @Controller('table')

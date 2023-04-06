@@ -5,9 +5,9 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { Table } from './entities/table.entity';
-import { CreateTableDto } from './table.dto';
+import { CreateTableDto } from './dto/table.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateTableDto } from './update-table.dto';
+import { UpdateTableDto } from './dto/update-table.dto';
 
 @Injectable()
 export class TableService {
@@ -47,7 +47,7 @@ export class TableService {
   async create(dto: CreateTableDto): Promise<Table> {
     const data: Table = { ...dto };
 
-    await this.prisma.table.create({ data }).catch(this.handleError); //({data:data}) is the same ad ({data}) ==> implicit
+    await this.prisma.table.create({ data }).catch(this.handleError); //({data:data}) is the same as ({data}) ==> implicit
     return undefined;
   }
 
