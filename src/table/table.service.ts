@@ -15,7 +15,6 @@ export class TableService {
 
   async findById(id: string): Promise<Table> {
     const response = await this.prisma.table.findUnique({ where: { id } });
-    console.log(response);
 
     if (!response) {
       throw new BadRequestException(`Registro com id não encontrado.`);
@@ -41,7 +40,6 @@ export class TableService {
   handleError(error: Error) {
     console.log(error.message);
     throw new UnprocessableEntityException(error.message);
-    return undefined;
   }
 
   async create(dto: CreateTableDto): Promise<Table> {

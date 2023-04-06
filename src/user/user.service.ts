@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findById(id: string) {
+    const response = await this.prisma.user.findUnique({ where: { id } });
+    if (!response) {
+      throw new BadRequestException(`Registro com id não encontrado.`);
+    }
+    return undefined;
+  }
+  handleError(error: Error) {
+    console.log(error.message);
+    throw new UnprocessableEntityException(error.message);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async create(dto: CreateUserDto): Promise<User> {
+    const data: CreateUserDto = { ...dto };
+    await this.prisma.user.create({ data }).catch(this.handleError);
+    return undefined;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} user`;
+  findAll(): Promise<User[]> {
+    return this.prisma.user.findMany();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findOne(id: string): Promise<User> {
+    return this.findById(id);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async update(id: string, dto: UpdateUserDto) {
+    await this.findById(id);
+
+    const data: Partial<User> = { ...dto };
+    return this.prisma.user.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    await this.findById(id)
+    return this.prisma.user.delete({where: { id }}).catch(this.handleError);
   }
 }

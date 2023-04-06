@@ -19,7 +19,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({
-    summary: 'buscar todos os usuários',
+    summary: 'Buscar todos os usuários',
   })
   findAll() {
     return this.userService.findAll();
@@ -45,7 +45,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Deletar usuário por id',
   })
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+
+  delete(@Param('id') id: string) {
+    return this.userService.delete(id);
   }
 }
