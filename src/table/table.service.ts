@@ -8,6 +8,7 @@ import { Table } from './entities/table.entity';
 import { CreateTableDto } from './dto/table.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { handleError } from 'src/utils/handleError';
 
 @Injectable()
 export class TableService {
@@ -37,15 +38,10 @@ export class TableService {
     });
   }
 
-  handleError(error: Error) {
-    console.log(error.message);
-    throw new UnprocessableEntityException(error.message);
-  }
-
   async create(dto: CreateTableDto): Promise<Table> {
     const data: Table = { ...dto };
 
-    await this.prisma.table.create({ data }).catch(this.handleError); //({data:data}) is the same as ({data}) ==> implicit
+    await this.prisma.table.create({ data }).catch(handleError); //({data:data}) is the same as ({data}) ==> implicit
     return undefined;
   }
 
@@ -55,6 +51,6 @@ export class TableService {
 
   async delete(id: string): Promise<void> {
     await this.findById(id)
-    await this.prisma.table.delete({ where: { id } }).catch(this.handleError);
+    await this.prisma.table.delete({ where: { id } }).catch(handleError);
   }
 }

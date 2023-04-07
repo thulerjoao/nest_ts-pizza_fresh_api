@@ -7,6 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './entities/user.entity';
+import { handleError } from 'src/utils/handleError';
 
 @Injectable()
 export class UserService {
@@ -19,14 +20,16 @@ export class UserService {
     }
     return undefined;
   }
-  handleError(error: Error) {
-    console.log(error.message);
-    throw new UnprocessableEntityException(error.message);
-  }
 
   async create(dto: CreateUserDto): Promise<User> {
-    const data: CreateUserDto = { ...dto };
-    await this.prisma.user.create({ data }).catch(this.handleError);
+    if (dto.password === dto.confirmPassword) {
+      delete dto.confirmPassword;
+      const data: User = { ...dto };
+
+      await this.prisma.user.create({ data }).catch(handleError);
+    } else {
+      throw new BadRequestException(`As senhas não coincidem`);
+    }
     return undefined;
   }
 
@@ -40,8 +43,9 @@ export class UserService {
 
   async update(id: string, dto: UpdateUserDto) {
     await this.findById(id);
-
+    delete dto.confirmPassword;
     const data: Partial<User> = { ...dto };
+
     return this.prisma.user.update({
       where: { id },
       data,
@@ -49,7 +53,7 @@ export class UserService {
   }
 
   async delete(id: string) {
-    await this.findById(id)
-    return this.prisma.user.delete({where: { id }}).catch(this.handleError);
+    await this.findById(id);
+    return this.prisma.user.delete({ where: { id } }).catch(handleError);
   }
 }

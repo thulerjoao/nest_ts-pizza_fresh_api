@@ -52,8 +52,8 @@ export class TableController {
     return this.tableService.update(id, dto);
   }
 
-  @Delete(`:id`)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(`:id`)
   @ApiOperation({
     summary: 'Excluir mesa por id',
   })

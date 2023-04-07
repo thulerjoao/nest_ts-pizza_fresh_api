@@ -8,6 +8,7 @@ import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { handleError } from 'src/utils/handleError';
 
 @Injectable()
 export class ProductService {
@@ -38,16 +39,13 @@ export class ProductService {
     });
   }
 
-  handleError(error: Error) {
-    console.log(error.message);
-    throw new UnprocessableEntityException(error.message);
-    return undefined;
-  }
-
   async create(dto: CreateProductDto): Promise<Product> {
     const data: Product = { ...dto };
+    console.log(data);
 
-    await this.prisma.product.create({ data }).catch(this.handleError); //({data:data}) is the same as ({data}) ==> implicit
+
+    await this.prisma.product.create({ data }).catch(handleError); //({data:data}) is the same as ({data}) ==> implicit
+
     return undefined;
   }
 
@@ -57,6 +55,6 @@ export class ProductService {
 
   async delete(id: string): Promise<void> {
     await this.findById(id)
-    await this.prisma.product.delete({ where: { id } }).catch(this.handleError);
+    await this.prisma.product.delete({ where: { id } }).catch(handleError);
   }
 }

@@ -5,5 +5,5 @@ export class Product {
   price: number;
   description: string;
   createdAt?: Date;
-  updatedAt?: Date
+  updatedAt?: Date;
 }

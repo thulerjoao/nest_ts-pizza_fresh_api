@@ -25,4 +25,12 @@ export class CreateUserDto {
     example: 'Abcd@1234',
   })
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'confirm password',
+    example: 'Abcd@1234',
+  })
+  confirmPassword:string;
 }
