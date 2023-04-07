@@ -41,12 +41,10 @@ export class ProductService {
 
   async create(dto: CreateProductDto): Promise<Product> {
     const data: Product = { ...dto };
-    console.log(data);
-
 
     await this.prisma.product.create({ data }).catch(handleError); //({data:data}) is the same as ({data}) ==> implicit
 
-    return undefined;
+    return data;
   }
 
   findAll(): Promise<Product[]> {
@@ -54,7 +52,7 @@ export class ProductService {
   }
 
   async delete(id: string): Promise<void> {
-    await this.findById(id)
+    await this.findById(id);
     await this.prisma.product.delete({ where: { id } }).catch(handleError);
   }
 }

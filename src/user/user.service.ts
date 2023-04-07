@@ -18,7 +18,7 @@ export class UserService {
     if (!response) {
       throw new BadRequestException(`Registro com id não encontrado.`);
     }
-    return undefined;
+    return response;
   }
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -30,7 +30,8 @@ export class UserService {
     } else {
       throw new BadRequestException(`As senhas não coincidem`);
     }
-    return undefined;
+    delete dto.password
+    return dto;
   }
 
   findAll(): Promise<User[]> {
