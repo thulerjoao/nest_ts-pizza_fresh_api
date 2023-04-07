@@ -8,13 +8,28 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './entities/user.entity';
 import { handleError } from 'src/utils/handleError';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
+
+  private userSelect = {
+    id: true,
+    name: true,
+    photo: true,
+    password: false,
+    createdAt: true,
+    updatedAt: true,
+  }
+
   constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string) {
-    const response = await this.prisma.user.findUnique({ where: { id } });
+    const response = await this.prisma.user.findUnique(
+      {
+        where: { id },
+        select: this.userSelect,
+      });
     if (!response) {
       throw new BadRequestException(`Registro com id não encontrado.`);
     }
@@ -22,20 +37,26 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<User> {
-    if (dto.password === dto.confirmPassword) {
-      delete dto.confirmPassword;
-      const data: User = { ...dto };
-
-      await this.prisma.user.create({ data }).catch(handleError);
-    } else {
+    if (dto.password !== dto.confirmPassword) {
       throw new BadRequestException(`As senhas não coincidem`);
     }
-    delete dto.password
-    return dto;
+    delete dto.confirmPassword;
+    const data: User = {
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10)
+    };
+
+    return this.prisma.user.create(
+    {
+      data,
+      select: this.userSelect
+    }).catch(handleError);
   }
 
   findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select: this.userSelect,
+    });
   }
 
   async findOne(id: string): Promise<User> {
@@ -50,6 +71,7 @@ export class UserService {
     return this.prisma.user.update({
       where: { id },
       data,
+      select: this.userSelect,
     });
   }
 
