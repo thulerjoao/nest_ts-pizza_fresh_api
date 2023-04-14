@@ -91,7 +91,11 @@ export class OrderService {
           },
           products:{
             select:{
-              title: true
+              id: true,
+              title: true,
+              price: true,
+              photo: true,
+              description: true,
             }
           }
         }
