@@ -20,7 +20,7 @@ export class OrderService {
           number: dto.tableNumber,
         },
       },
-      product: {
+      products: {
         connect: dto.products.map((productId) => ({
           id: productId,
         })),
@@ -41,7 +41,7 @@ export class OrderService {
               name: true,
             },
           },
-          product: {
+          products: {
             select: {
               title: true,
             },
@@ -51,11 +51,30 @@ export class OrderService {
       .catch(handleError);
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    return this.prisma.order.findMany({
+      select:{
+        id: true,
+        table: {
+          select: {
+            number: true
+          }
+        },
+        products: {
+          select: {
+            title: true,
+          },
+        },
+        // _count: {
+        //   select: {
+        //     products: true
+        //   }
+        // },
+      }
+    }).catch(handleError)
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} order`;
+  async findOne(id: string) {
+    return this.prisma.order.findUnique({ where: {id}}).catch(handleError)
   }
 }

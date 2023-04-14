@@ -60,7 +60,7 @@ model Order {
   table Table @relation(fields:[tableID], references:[id])
   tableID String @map("table_id")
 
-  product Product[]
+  products Product[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
