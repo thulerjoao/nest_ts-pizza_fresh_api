@@ -75,6 +75,27 @@ export class OrderService {
   }
 
   async findOne(id: string) {
-    return this.prisma.order.findUnique({ where: {id}}).catch(handleError)
+    return this.prisma.order.findUnique(
+      { where: {id},
+        select:{
+          id: true,
+          user:{
+            select:{
+              name: true
+            }
+          },
+          table:{
+            select:{
+              number: true
+            }
+          },
+          products:{
+            select:{
+              title: true
+            }
+          }
+        }
+      },
+      ).catch(handleError)
   }
 }
