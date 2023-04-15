@@ -20,11 +20,20 @@ export class OrderService {
           number: dto.tableNumber,
         },
       },
-      products: {
-        connect: dto.products.map((productId) => ({
-          id: productId,
-        })),
-      },
+      products:{
+        createMany:{
+          data: dto.products.map((createOrderProductDto)=>({
+            productId: createOrderProductDto.productId,
+            quantity: createOrderProductDto.quantity,
+            description: createOrderProductDto.description,
+          }))
+        }
+      }
+      // products: {                                        ==> quando tabela ralacional é criada automaticamente
+      //   connect: dto.products.map((productId) => ({
+      //     id: productId,
+      //   })),
+      // },
     };
     return this.prisma.order
       .create({
@@ -41,9 +50,10 @@ export class OrderService {
               name: true,
             },
           },
-          products: {
+          //quando vai se retornar dados de outra tabela, se usa o _count
+          _count: {
             select: {
-              title: true,
+              products: true,
             },
           },
         },
@@ -60,11 +70,11 @@ export class OrderService {
             number: true
           }
         },
-        products: {
+        _count: {
           select: {
-            title: true,
-          },
-        },
+            products:true
+          }
+        }
         // _count: {
         //   select: {
         //     products: true
@@ -89,15 +99,15 @@ export class OrderService {
               number: true
             }
           },
-          products:{
-            select:{
-              id: true,
-              title: true,
-              price: true,
-              photo: true,
-              description: true,
-            }
-          }
+          // products:{     ==> quando tabela ralacional é criada automaticamente
+          //   select:{
+          //     id: true,
+          //     title: true,
+          //     price: true,
+          //     photo: true,
+          //     description: true,
+          //   }
+          // }
         }
       },
       ).catch(handleError)
