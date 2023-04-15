@@ -85,6 +85,9 @@ model OrderProduct {
   product Product @relation(fields: [productId], references: [id])
   productId String @map("product_id")
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@unique([orderId, productId])
   @@map("order_to_product")
 }
