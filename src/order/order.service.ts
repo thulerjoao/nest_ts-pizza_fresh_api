@@ -8,11 +8,11 @@ import { handleError } from 'src/utils/handleError';
 export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateOrderDto) {
+  async create(userId: string, dto: CreateOrderDto) {
     const data: Prisma.OrderCreateInput = {
       user: {
         connect: {
-          id: dto.userId,
+          id: userId,
         },
       },
       table: {
