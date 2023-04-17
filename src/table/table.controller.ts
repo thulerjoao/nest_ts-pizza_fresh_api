@@ -8,12 +8,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/table.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Table } from './entities/table.entity';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('table')
 @Controller('table')
@@ -21,6 +23,8 @@ export class TableController {
   constructor(private tableService: TableService) {}
 
   @Get(`:id`)
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Buscar mesa por id',
   })
@@ -29,6 +33,8 @@ export class TableController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Listar todas as mesas',
   })
@@ -37,6 +43,8 @@ export class TableController {
   }
 
   @Post()
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Adicionar nova mesa',
   })
@@ -45,6 +53,8 @@ export class TableController {
   }
 
   @Patch(`:id`)
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Atualizar mesa por id',
   })
@@ -54,6 +64,8 @@ export class TableController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(`:id`)
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Excluir mesa por id',
   })

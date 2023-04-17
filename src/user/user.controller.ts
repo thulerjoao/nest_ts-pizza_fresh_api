@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('user')
 @Controller('user')
@@ -18,6 +19,8 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Buscar todos os usuários',
   })
@@ -26,6 +29,8 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Buscar usuário por id',
   })
@@ -34,6 +39,8 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Atualizar usuário por id',
   })
@@ -43,6 +50,8 @@ export class UserController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Deletar usuário por id',
   })

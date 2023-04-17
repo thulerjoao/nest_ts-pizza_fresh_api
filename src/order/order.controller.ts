@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('order')
 @Controller('order')
@@ -9,7 +10,9 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  @ApiOperation({   // < TAGS DO SWAGGER
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  @ApiOperation({
     summary: 'Criar um pedido',
   })
   create(@Body() dto: CreateOrderDto) {
@@ -17,7 +20,9 @@ export class OrderController {
   }
 
   @Get()
-  @ApiOperation({   // < TAGS DO SWAGGER
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  @ApiOperation({
     summary: 'Listar todos os pedidos',
   })
   findAll() {
@@ -25,7 +30,9 @@ export class OrderController {
   }
 
   @Get(':id')
-  @ApiOperation({   // < TAGS DO SWAGGER
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  @ApiOperation({
     summary: 'Buscar pedido por id',
   })
   findOne(@Param('id') id: string) {

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags(`product`)
 @Controller('product')
@@ -10,6 +11,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
     summary: 'Cadastrar um produto',
   })
@@ -18,6 +21,8 @@ export class ProductController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
     summary: 'Buscar todos os produtos',
   })
@@ -26,6 +31,8 @@ export class ProductController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
     summary: 'Buscar produto por id',
   })
@@ -34,6 +41,8 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
     summary: 'Atualizar produto por id',
   })
@@ -43,6 +52,8 @@ export class ProductController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
     summary: 'Excluir produto por id',
   })
