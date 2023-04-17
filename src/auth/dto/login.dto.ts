@@ -8,7 +8,7 @@ export class LoginDto{
     description: "Informe o usuário",
     example: "thulerjoao"
   })
-  user: string
+  nickname: string
 
   @IsString()
   @IsNotEmpty()

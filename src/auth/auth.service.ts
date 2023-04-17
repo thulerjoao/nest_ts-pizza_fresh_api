@@ -1,14 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class AuthService {
+  constructor(private readonly prisma: PrismaService) {}
+
 
   async login(dto: LoginDto): Promise<LoginResponseDto> {
+    const { nickname, password } = dto
+
+    const user = await this.prisma.user.findUnique({where: { nickname }})
+    if (!user){
+        throw new UnauthorizedException('Usuário não encontrado');
+    }
+
+    const isHashValid  = await bcrypt.compare(password, user.password)
+    if(!isHashValid){
+        throw new UnauthorizedException('Senha inválida');
+    }
+
+    delete user.password;
+
     return{
       token: 'teste',
-      user: undefined
+      user: user
     }
   }
 }

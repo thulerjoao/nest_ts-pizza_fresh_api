@@ -15,6 +15,7 @@ export class UserService {
 
   private userSelect = {
     id: true,
+    nickname: true,
     name: true,
     photo: true,
     password: false,
