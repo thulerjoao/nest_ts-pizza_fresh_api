@@ -32,9 +32,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+
+
       - name: Set up environment variables
         run: |
           echo "DATABASE_URL=postgresql://postgres:admin@localhost:5432/pizza-fresh" >> $GITHUB_ENV
+          echo "JWT_SECRET=4cLo01zcki521wA5Fdhy" >> $GITHUB_ENV
 
       - name: Generate Prisma client
         run: npx prisma generate
