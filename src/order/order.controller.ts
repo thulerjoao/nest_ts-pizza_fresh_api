@@ -15,7 +15,7 @@ export class OrderController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Criar um pedido',
+    summary: 'Create new order',
   })
   create(@LoggedUser() user: User, @Body() dto: CreateOrderDto) {
     return this.orderService.create(user.id, dto);
@@ -25,7 +25,7 @@ export class OrderController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Listar todos os pedidos',
+    summary: 'Listar all orders',
   })
   findAll() {
     return this.orderService.findAll();
@@ -35,7 +35,7 @@ export class OrderController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Buscar pedido por id',
+    summary: 'Search order by id',
   })
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);

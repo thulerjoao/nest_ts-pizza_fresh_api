@@ -26,7 +26,7 @@ export class TableController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Buscar mesa por id',
+    summary: 'Search table by id',
   })
   findOne(@Param(`id`) id: string): Promise<Table> {
     return this.tableService.findOne(id);
@@ -36,7 +36,7 @@ export class TableController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Listar todas as mesas',
+    summary: 'List all tables',
   })
   findAll(): Promise<Table[]> {
     return this.tableService.findAll();
@@ -46,7 +46,7 @@ export class TableController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Adicionar nova mesa',
+    summary: 'Create new table',
   })
   create(@Body() dto: CreateTableDto) {
     return this.tableService.create(dto);
@@ -56,7 +56,7 @@ export class TableController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Atualizar mesa por id',
+    summary: 'Update table by id',
   })
   update(@Param('id') id: string, @Body() dto: UpdateTableDto): Promise<Table> {
     return this.tableService.update(id, dto);
@@ -67,7 +67,7 @@ export class TableController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Excluir mesa por id',
+    summary: 'Delete table by id',
   })
   delete(@Param(`id`) id: string){
     this.tableService.delete(id)

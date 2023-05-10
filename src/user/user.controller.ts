@@ -12,7 +12,7 @@ export class UserController {
 
   @Post()
   @ApiOperation({
-    summary: 'Cadastrar novo usuário',
+    summary: 'Register new user',
   })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -22,7 +22,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Buscar todos os usuários',
+    summary: 'Search all users',
   })
   findAll() {
     return this.userService.findAll();
@@ -32,7 +32,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Buscar usuário por id',
+    summary: 'Search user by id',
   })
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
@@ -42,7 +42,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Atualizar usuário por id',
+    summary: 'Update user by id',
   })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
@@ -53,7 +53,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Deletar usuário por id',
+    summary: 'Delete user by id',
   })
 
   delete(@Param('id') id: string) {

@@ -14,7 +14,7 @@ export class ProductController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
-    summary: 'Cadastrar um produto',
+    summary: 'Create new product',
   })
   create(@Body() dto: CreateProductDto) {
     return this.productService.create(dto);
@@ -24,7 +24,7 @@ export class ProductController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
-    summary: 'Buscar todos os produtos',
+    summary: 'Search all products',
   })
   findAll() {
     return this.productService.findAll();
@@ -34,7 +34,7 @@ export class ProductController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
-    summary: 'Buscar produto por id',
+    summary: 'Search product by id',
   })
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
@@ -44,7 +44,7 @@ export class ProductController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
-    summary: 'Atualizar produto por id',
+    summary: 'Update product by id',
   })
   update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     return this.productService.update(id, dto);
@@ -55,7 +55,7 @@ export class ProductController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({   // < TAGS DO SWAGGER
-    summary: 'Excluir produto por id',
+    summary: 'Delete product by id',
   })
 
   delete(@Param('id') id: string) {

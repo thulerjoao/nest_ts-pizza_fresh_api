@@ -19,7 +19,7 @@ export class AuthService {
 
     const user = await this.prisma.user.findUnique({where: { nickname }})
     if (!user){
-        throw new UnauthorizedException('Usuário não encontrado');
+        throw new UnauthorizedException('User not found');
     }
 
     const isHashValid  = await bcrypt.compare(password, user.password)

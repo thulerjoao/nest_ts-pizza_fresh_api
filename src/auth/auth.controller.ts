@@ -15,7 +15,7 @@ export class AuthController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Realizar login, recebendo um token de autenticação',
+    summary: 'Log in, receiving an authentication token',
   })
   login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
     return this.authService.login(dto)
@@ -25,7 +25,7 @@ export class AuthController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Retornar o usuário autenticado',
+    summary: 'Return authenticated user',
   })
   profile(@LoggedUser() user: User){
     return user
