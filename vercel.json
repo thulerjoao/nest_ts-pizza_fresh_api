@@ -1,4 +1,6 @@
 {
+
+  "public": "dist",
   "version": 2,
   "builds": [
     { "src": "src/main.ts", "use": "@now/node" }
