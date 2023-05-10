@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "src/main.ts", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "src/main.ts" }
+  ],
+  "env": {
+    "DATABASE_URL":"postgresql://postgres:admin@localhost:5432/pizza-fresh",
+    "JWT_SECRET":"4cLo01zcki521wA5Fdhy"
+  }
+}
